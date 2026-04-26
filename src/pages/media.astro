@@ -1,0 +1,25 @@
+---
+import { getEntry } from 'astro:content';
+import PageLayout from '../components/PageLayout.astro';
+import RichText from '../components/RichText.astro';
+
+const media = await getEntry('pages', 'media');
+
+if (!media) {
+  throw new Error('Missing media page content.');
+}
+---
+
+<PageLayout title="Media" description={media.data.description} path="/media">
+  <div class="page-wrap">
+    <section class="content-block">
+      <p class="section-label">Media</p>
+      <h1 class="page-title">Conversations, speaking, and public-facing context.</h1>
+      <p class="page-intro">
+        This section stays intentionally light. I would rather add a few real things over time than manufacture a media page before there is substance behind it.
+      </p>
+    </section>
+
+    <RichText content={media} />
+  </div>
+</PageLayout>

@@ -1,0 +1,51 @@
+---
+import { getCollection, render } from 'astro:content';
+import PageLayout from '../../components/PageLayout.astro';
+
+export async function getStaticPaths() {
+  const essays = await getCollection('thinking');
+  return essays.map((essay) => ({
+    params: { slug: essay.id },
+    props: { essay },
+  }));
+}
+
+const { essay } = Astro.props;
+const { Content } = await render(essay);
+const formattedDate = essay.data.date.toLocaleDateString('en-GB', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+---
+
+<PageLayout
+  title={essay.data.title}
+  description={essay.data.description}
+  path={`/thinking/${essay.id}/`}
+>
+  <div class="page-wrap">
+    <section class="split-block">
+      <div class="content-block">
+        <a class="eyebrow-link section-label" href="/thinking">Thinking</a>
+        <h1 class="page-title">{essay.data.title}</h1>
+        <p class="page-intro">{essay.data.description}</p>
+      </div>
+
+      <aside class="meta-panel">
+        <div class="meta-stack">
+          <span class="meta-label">Published</span>
+          <p class="meta-copy">{formattedDate}</p>
+        </div>
+        <div class="meta-stack">
+          <span class="meta-label">Topics</span>
+          <p class="meta-copy">{essay.data.tags.join(' · ')}</p>
+        </div>
+      </aside>
+    </section>
+
+    <article class="rich-text prose-flow">
+      <Content />
+    </article>
+  </div>
+</PageLayout>

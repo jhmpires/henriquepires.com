@@ -1,0 +1,38 @@
+---
+import { getEntry } from 'astro:content';
+import PageLayout from '../components/PageLayout.astro';
+import RichText from '../components/RichText.astro';
+
+const about = await getEntry('pages', 'about');
+
+if (!about) {
+  throw new Error('Missing about page content.');
+}
+---
+
+<PageLayout title="About" description={about.data.description} path="/about">
+  <div class="page-wrap">
+    <section class="split-block">
+      <div class="content-block">
+        <p class="section-label">About</p>
+        <h1 class="page-title">Background, operating style, and the kind of problems I am built for.</h1>
+        <p class="page-intro">
+          I am strongest where business logic, product reality, and uncertain markets meet. That tends to mean early-stage work, emerging technology, and situations where the obvious playbook does not really exist.
+        </p>
+      </div>
+
+      <aside class="meta-panel">
+        <div class="meta-stack">
+          <span class="meta-label">Focus</span>
+          <p class="meta-copy">Positioning, ecosystems, business development, product strategy, and strategic execution.</p>
+        </div>
+        <div class="meta-stack">
+          <span class="meta-label">Background</span>
+          <p class="meta-copy">Engineering foundation, cross-functional work, and a bias toward structured thinking.</p>
+        </div>
+      </aside>
+    </section>
+
+    <RichText content={about} />
+  </div>
+</PageLayout>

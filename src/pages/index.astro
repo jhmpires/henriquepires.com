@@ -1,0 +1,100 @@
+---
+import { getCollection } from 'astro:content';
+import CardGrid from '../components/CardGrid.astro';
+import Hero from '../components/Hero.astro';
+import PageLayout from '../components/PageLayout.astro';
+
+const projects = (await getCollection('projects'))
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 3);
+
+const essays = (await getCollection('thinking'))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, 3);
+
+const cards = [
+  {
+    href: '/about',
+    kicker: 'Background',
+    title: 'About',
+    description: 'Engineering-trained business development, systems thinking, and the kind of work that sits between ambiguity and execution.',
+  },
+  {
+    href: '/projects',
+    kicker: 'Selected work',
+    title: 'Projects',
+    description: 'A small set of public-facing contexts that reflect how I think about product, market adoption, and ecosystem design.',
+  },
+  {
+    href: '/thinking',
+    kicker: 'Essays & notes',
+    title: 'Thinking',
+    description: 'Short pieces on adoption, positioning, infrastructure, and what happens between technical reality and market reality.',
+  },
+  {
+    href: '/connect',
+    kicker: 'Direct contact',
+    title: 'Connect',
+    description: 'If you want to talk, this is the most direct way in. Human, simple, and without funnels.',
+  },
+];
+---
+
+<PageLayout
+  title="Henrique Pires"
+  description="A minimal editorial personal website for Henrique Pires, focused on strategic business development, systems thinking, and emerging technology."
+  path="/"
+>
+  <div class="page-wrap">
+    <Hero
+      eyebrow="Personal website"
+      title="Business development for technical markets, with systems in view."
+      intro="Helping technology-driven companies turn complex products into real market traction. I work across business, product, partnerships, and emerging technology, usually where ambiguity, positioning, and execution meet."
+    />
+
+    <section class="section-block">
+      <div class="block-header">
+        <p class="section-label">Entry points</p>
+        <h2>Not a CV, not a landing page.</h2>
+        <p>
+          This site is meant to feel closer to a working notebook than a pitch deck. The point is not volume. It is signal.
+        </p>
+      </div>
+      <CardGrid items={cards} />
+    </section>
+
+    <section class="split-block">
+      <div class="section-block">
+        <div class="block-header">
+          <p class="section-label">Selected projects</p>
+          <h2>Public-facing work, kept honest.</h2>
+        </div>
+        <div class="list-grid">
+          {projects.map((project) => (
+            <a class="list-card" href={`/projects/${project.id}/`}>
+              <span class="list-kicker">{project.data.role}</span>
+              <h3>{project.data.title}</h3>
+              <p>{project.data.intro}</p>
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <div class="section-block">
+        <div class="block-header">
+          <p class="section-label">Recent thinking</p>
+          <h2>Ideas that prefer structure over noise.</h2>
+        </div>
+        <div class="list-grid">
+          {essays.map((essay) => (
+            <a class="list-card" href={`/thinking/${essay.id}/`}>
+              <span class="list-kicker">{essay.data.tags.join(' · ')}</span>
+              <h3>{essay.data.title}</h3>
+              <p>{essay.data.description}</p>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  </div>
+</PageLayout>

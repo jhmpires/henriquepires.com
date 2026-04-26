@@ -1,0 +1,34 @@
+---
+import { getCollection } from 'astro:content';
+import PageLayout from '../../components/PageLayout.astro';
+
+const essays = (await getCollection('thinking')).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+);
+---
+
+<PageLayout
+  title="Thinking"
+  description="Essays and notes by Henrique Pires on adoption, ecosystems, strategy, and emerging technology."
+  path="/thinking"
+>
+  <div class="page-wrap">
+    <section class="content-block">
+      <p class="section-label">Thinking</p>
+      <h1 class="page-title">Notes on adoption, systems, and strategic leverage.</h1>
+      <p class="page-intro">
+        These are not hot takes. They are working ideas, written slowly enough to survive contact with reality.
+      </p>
+    </section>
+
+    <section class="list-grid">
+      {essays.map((essay) => (
+        <a class="list-card" href={`/thinking/${essay.id}/`}>
+          <span class="list-kicker">{essay.data.date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+          <h2>{essay.data.title}</h2>
+          <p>{essay.data.description}</p>
+        </a>
+      ))}
+    </section>
+  </div>
+</PageLayout>

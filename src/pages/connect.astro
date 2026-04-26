@@ -1,0 +1,25 @@
+---
+import { getEntry } from 'astro:content';
+import PageLayout from '../components/PageLayout.astro';
+import RichText from '../components/RichText.astro';
+
+const connect = await getEntry('pages', 'connect');
+
+if (!connect) {
+  throw new Error('Missing connect page content.');
+}
+---
+
+<PageLayout title="Connect" description={connect.data.description} path="/connect">
+  <div class="page-wrap">
+    <section class="content-block">
+      <p class="section-label">Connect</p>
+      <h1 class="page-title">Direct is better.</h1>
+      <p class="page-intro">
+        If you want to talk, the cleanest path is usually a direct message. No funnel, no performance, no calendar maze.
+      </p>
+    </section>
+
+    <RichText content={connect} />
+  </div>
+</PageLayout>

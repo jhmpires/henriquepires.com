@@ -1,0 +1,20 @@
+---
+import SectionCard from './SectionCard.astro';
+
+interface Item {
+  href: string;
+  title: string;
+  description: string;
+  kicker?: string;
+}
+
+interface Props {
+  items: Item[];
+}
+
+const { items } = Astro.props;
+---
+
+<div class="card-grid">
+  {items.map((item) => <SectionCard {...item} />)}
+</div>

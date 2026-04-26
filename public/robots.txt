@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://henriquepires.com/sitemap-index.xml

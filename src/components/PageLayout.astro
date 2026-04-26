@@ -1,0 +1,78 @@
+---
+import '../styles/global.css';
+import Footer from './Footer.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  path?: string;
+}
+
+const {
+  title,
+  description,
+  path = '/',
+} = Astro.props;
+
+const siteName = 'Henrique Pires';
+const siteUrl = new URL(path, Astro.site ?? 'https://henriquepires.com');
+const pageTitle = title === siteName ? siteName : `${title} | ${siteName}`;
+const ogImage = new URL('/og-image.jpg', Astro.site ?? 'https://henriquepires.com');
+const personJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Henrique Pires',
+  url: Astro.site ?? 'https://henriquepires.com',
+  jobTitle: 'Strategic Business Development',
+  description,
+  sameAs: ['https://t.me/jhmpires'],
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={siteUrl} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={siteUrl} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:site_name" content={siteName} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(personJsonLd)} />
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="site-header">
+        <div class="site-header-inner">
+          <a class="site-title" href="/">Henrique Pires</a>
+          <nav class="site-nav" aria-label="Primary">
+            <a href="/about">About</a>
+            <a href="/projects">Projects</a>
+            <a href="/thinking">Thinking</a>
+            <a href="/connect">Connect</a>
+          </nav>
+        </div>
+      </header>
+
+      <main class="page-main">
+        <slot />
+      </main>
+
+      <Footer />
+    </div>
+  </body>
+</html>

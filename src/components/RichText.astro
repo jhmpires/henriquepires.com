@@ -1,0 +1,14 @@
+---
+import { render } from 'astro:content';
+
+interface Props {
+  content: any;
+}
+
+const { content } = Astro.props;
+const { Content } = await render(content);
+---
+
+<article class="rich-text prose-flow">
+  <Content />
+</article>

@@ -1,0 +1,32 @@
+---
+import { getCollection } from 'astro:content';
+import PageLayout from '../../components/PageLayout.astro';
+
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<PageLayout
+  title="Projects"
+  description="Selected public-facing work by Henrique Pires across strategy, partnerships, product thinking, and market adoption."
+  path="/projects"
+>
+  <div class="page-wrap">
+    <section class="content-block">
+      <p class="section-label">Projects</p>
+      <h1 class="page-title">A few contexts that show how I work.</h1>
+      <p class="page-intro">
+        This is a deliberately small set. The goal is not to simulate scale. It is to show patterns: technical translation, ecosystem logic, and strategic execution under ambiguity.
+      </p>
+    </section>
+
+    <section class="list-grid">
+      {projects.map((project) => (
+        <a class="list-card" href={`/projects/${project.id}/`}>
+          <span class="list-kicker">{project.data.period}</span>
+          <h2>{project.data.title}</h2>
+          <p>{project.data.description}</p>
+        </a>
+      ))}
+    </section>
+  </div>
+</PageLayout>
